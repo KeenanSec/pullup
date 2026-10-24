@@ -1,17 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
+  // Keep type checking enabled through the compiler API; the CLI subprocess
+  // cannot return its config reliably in this workspace.
+  experimental: { useTypeScriptCli: false },
+  // The interface uses standard CSS, which Turbopack compiles natively.
 };
 
 export default nextConfig;

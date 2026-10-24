@@ -1,0 +1,17 @@
+{
+  "name": "PullUp — Campus plans",
+  "short_name": "PullUp",
+  "description": "Good plans. Real people. Actually happening.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#191919",
+  "theme_color": "#191919",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

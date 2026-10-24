@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PullUp
 
-## Getting Started
+Campus plans that go ahead when enough people commit. Built with Next.js App Router, React, TypeScript, and Lucide icons.
 
-First, run the development server:
+## Run locally
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Run `npm run build` for a production build and `npm start` to serve it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Responsive discovery feed with category filters, search, and sorting.
+- Create plans with a meeting place, minimum attendance, and confirmation deadline.
+- Join or leave plans with a five-token commitment balance; capacity and token limits are enforced.
+- Confirmed-plan check-ins refund a token once. Pending plans dissolve at their deadline and release reserved tokens.
+- My plans, device-local persistence, accessible native dialogs, keyboard focus, and reduced-motion support.
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+`src/lib/plans.ts` contains the pure state reducer and token calculation. `src/hooks/usePlans.ts` connects that state to browser storage and timer synchronization. `src/app/page.tsx` composes the interface. `MeetupCard` renders discovery cards; `PlanDialog` handles modal focus and keyboard dismissal. Sample campus data lives in `src/lib/mockData.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run the state-transition regression tests with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```sh
+node --test tests/plans.test.cjs
+npx tsc --noEmit
+```
 
-## Deploy on Vercel
+## Current scope
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This is a local interactive prototype, not a shared service. Other participants are sample data. Plans persist only in this browser under `lockin-plans-v1`; clearing that key resets the demo. Check-in is self-reported. There is no authentication, database, campus verification, notification delivery, or location verification. A production launch needs server-authoritative identity, plan membership and token transactions, expiration jobs, and shared storage.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Geist fonts load through `next/font/google`; initial builds require access to Google Fonts. Older prototype components remain in `src/components` for reference but are not used by the current page.
+
+## Visual direction
+
+The current interface uses a charcoal canvas, large editorial typography, lavender accents, and original category-specific SVG artwork. The visual references were [Laws of UX](https://lawsofux.com/) and [Land-book](https://land-book.com/?view=mobile). The feed adapts from three columns to two to one; controls, confirmation status, and token actions use the same layout across categories. `src/hooks/usePlans.ts` owns browser persistence and timer synchronization; `PlanForm` owns plan creation, and `PlanArtwork` contains the vector covers.
